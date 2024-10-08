@@ -1,0 +1,18 @@
+{
+    "rewrites": [
+      { "source": "/", "destination": "/" },
+      { "source": "/signup", "destination": "/" },
+      { "source": "/login", "destination": "/" },
+      { "source": "/forgot-password", "destination": "/" },
+      { "source": "/users", "destination": "/" },
+      { "source": "/upload-image", "destination": "/" },
+      { "source": "/profile", "destination": "/" }
+    ],
+    "builds": [
+      { "src": "src/App.jsx", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/" }
+    ]
+  }
+  
