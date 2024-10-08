@@ -10,7 +10,7 @@ const UsersList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/users");
+        const res = await axios.get("https://pradipblogs-backend.onrender.com/api/users");
         console.log(res.data); // Check the response structure
         setUsers(res.data.data || []); // Set users to res.data.data
       } catch (err) {
@@ -24,7 +24,7 @@ const UsersList = () => {
   const handleDelete = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`http://localhost:8080/api/users/delete/${userId}`);
+        await axios.delete(`https://pradipblogs-backend.onrender.com/api/users/delete/${userId}`);
         setUsers(users.filter(user => user._id !== userId)); // Remove deleted user from state
         toast.success("User deleted successfully");
       } catch (err) {

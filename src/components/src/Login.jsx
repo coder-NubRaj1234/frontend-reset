@@ -21,7 +21,7 @@ const Login = () => {
     setButtonDisabled(true);
     if (validateInputs()) {
       try {
-        const res = await axios.post("http://localhost:8080/api/login", {
+        const res = await axios.post("https://pradipblogs-backend.onrender.com/api/login", {
           email,
           password,
         });

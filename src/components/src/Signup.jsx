@@ -21,7 +21,7 @@ const Signup = () => {
 
   const checkIfAccountExists = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/check-email/${email}`);
+      const res = await axios.get(`https://pradipblogs-backend.onrender.com/api/check-email/${email}`);
       return res.data.exists; // Assuming your backend returns an object with an 'exists' property
     } catch (err) {
       console.error("Error checking account existence:", err);
@@ -42,7 +42,7 @@ const Signup = () => {
       }
 
       try {
-        const res = await axios.post("http://localhost:8080/api/signup", {
+        const res = await axios.post("https://pradipblogs-backend.onrender.com/api/signup", {
           fullname,
           email,
           password,

@@ -17,7 +17,7 @@ const UploadImage = () => {
     formData.append("image", image);
 
     try {
-      const res = await axios.post("http://localhost:8080/api/upload-image", formData);
+      const res = await axios.post("https://pradipblogs-backend.onrender.com/api/upload-image", formData);
       toast.success("Image uploaded successfully");
       console.log("Response:", res.data);
     } catch (err) {

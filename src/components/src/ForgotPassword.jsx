@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const handleForgotPassword = async () => {
     if (email) {
       try {
-        await axios.post("http://localhost:8080/api/forgot-password", { email });
+        await axios.post("https://pradipblogs-backend.onrender.com/api/forgot-password", { email });
         toast.success("Check your email for a reset link");
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);
