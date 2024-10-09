@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Navbar from "./components/Navbar/Navbar"; // Ensure you have a Navbar component
+import Navbar from "./components/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-import eye from "../../../public/eye.png"; // Import eye image
-import eyeclose from "../../../public/eyeclose.png"; // Import eye close image
+import eye from "../../../public/eye.png";
+import eyeclose from "../../../public/eyeclose.png";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { app } from "../../firebaseConfig";
+import { AiOutlineGoogle } from "react-icons/ai"; // Import Google icon
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,16 +16,31 @@ const Login = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const validateInputs = () => {
-    return email && password;
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
+      toast.success("✅ Google Login Successful");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const validateInputs = () => email && password;
 
   const handleSignIn = async () => {
     setLoading(true);
     setButtonDisabled(true);
-    
     if (validateInputs()) {
       try {
         const res = await axios.post("https://pradipblogs-backend.onrender.com/api/login", {
@@ -30,9 +48,8 @@ const Login = () => {
           password,
         });
         toast.success("✅ Login Successful");
-        console.log("Response:", res.data);
         localStorage.setItem("token", res.data.token);
-        navigate("/"); // Redirect after successful login
+        navigate("/");
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);
       } finally {
@@ -46,15 +63,6 @@ const Login = () => {
     }
   };
 
-  const handleResetPassword = () => {
-    navigate("/forgot-password"); // Redirect to the reset password page
-  };
-
-  const handleSignupRedirect = () => {
-    navigate("/signup"); // Redirect to the signup page
-  };
-
-  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -79,22 +87,18 @@ const Login = () => {
               />
               <div className="relative">
                 <input
-                  type={passwordVisible ? "text" : "password"} // Change input type based on visibility
+                  type={passwordVisible ? "text" : "password"}
                   className="w-full p-3 bg-[#ffffff14] border-[#ffffff14] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#634da3]"
                   placeholder="🔒 Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button 
+                <button
                   type="button"
                   onClick={togglePasswordVisibility}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 >
-                  <img 
-                    src={passwordVisible ? eye : eyeclose} // Show/hide eye image based on visibility
-                    alt="Toggle Password Visibility" 
-                    className="w-6 h-6"
-                  />
+                  <img src={passwordVisible ? eye : eyeclose} alt="Toggle Password Visibility" className="w-6 h-6" />
                 </button>
               </div>
               <button
@@ -106,21 +110,22 @@ const Login = () => {
               >
                 {loading ? "🔄 Signing In..." : "✨ Sign In"}
               </button>
+              {/* Google Sign-In Button */}
+              <button
+                onClick={handleGoogleSignIn}
+                className="w-full p-3 mt-4 flex items-center justify-center text-white bg-[#db4437] rounded-md focus:outline-none hover:bg-[#c23321]"
+              >
+                <AiOutlineGoogle className="mr-2" size={20} />
+                Continue with Google
+              </button>
               <div className="mt-4 text-center">
-                <button
-                  onClick={handleResetPassword}
-                  className="text-[#634da3] hover:underline focus:outline-none"
-                >
+                <button onClick={() => navigate("/forgot-password")} className="text-[#634da3] hover:underline focus:outline-none">
                   🔑 Forgot Password?
                 </button>
               </div>
-              {/* Add a prompt for users to sign up */}
               <div className="mt-4 text-center">
                 <p className="text-[#ffffff40]">Don't have an account? 🤔</p>
-                <button
-                  onClick={handleSignupRedirect}
-                  className="text-[#634da3] hover:underline focus:outline-none"
-                >
+                <button onClick={() => navigate("/signup")} className="text-[#634da3] hover:underline focus:outline-none">
                   ✨ Sign Up
                 </button>
               </div>
