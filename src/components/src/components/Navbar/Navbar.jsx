@@ -58,7 +58,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-purple-600 text-3xl font-bold">
-          <Link to="/">MyApp</Link>
+          <Link to="/">Articles</Link>
         </div>
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-white focus:outline-none">
