@@ -50,7 +50,7 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-black min-h-screen flex justify-center items-center">
+      <div className="bg-gray-800 min-h-screen flex justify-center items-center">
         <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 w-full mx-4">
           {user ? (
             <>

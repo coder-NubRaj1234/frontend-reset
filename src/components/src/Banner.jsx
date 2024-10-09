@@ -55,7 +55,7 @@ const Banner = () => {
                 className="w-full h-screen object-cover"
               />
               {/* Move content to the bottom */}
-              <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center text-center bg-black bg-opacity-50 py-4">
+              <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center text-center bg-gray-800 bg-opacity-50 py-4">
                 <h2 className="text-4xl font-bold text-white md:text-3xl sm:text-2xl">
                   {image.title}
                 </h2>
@@ -68,7 +68,7 @@ const Banner = () => {
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
 
       <div className="relative flex flex-col justify-center items-center h-full">
         <h1 className="text-5xl font-bold text-gray-100 mb-4 pt-10 md:text-4xl text-2xl sm:text-3xl">

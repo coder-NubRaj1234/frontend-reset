@@ -7,6 +7,7 @@ import UsersList from "./components/src/UsersList";
 import UploadImage from "./components/src/UploadImage";
 import Home from "./pages/Home";
 import Profile from "./components/src/Profile";
+import Contact from "./components/src/Contact";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/users" element={<UsersList />} />
         <Route path="/upload-image" element={<UploadImage />} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/contact" element={<Contact/>} />
       </Routes>
     </Router>
   );

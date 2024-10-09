@@ -42,7 +42,7 @@ const UsersList = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-black min-h-screen flex justify-center items-start pt-20">
+      <div className="bg-gray-800 min-h-screen flex justify-center items-start pt-20">
         <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-gray-100">Users List</h2>
           <ul className="space-y-4 mt-4">

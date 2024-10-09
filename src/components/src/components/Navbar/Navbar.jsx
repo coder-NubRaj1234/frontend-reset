@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import { FaHome, FaUser, FaRegNewspaper, FaEnvelope, FaBars, FaTimes } from "react-icons/fa"; // Importing icons from React Icons
 import "@fontsource/roboto/400.css"; // Regular
 import "@fontsource/roboto/700.css"; // Bold
 import "@fontsource/montserrat/400.css"; // Regular
@@ -54,6 +55,14 @@ const Navbar = () => {
     navigate("/login"); // Redirect to login
   };
 
+  // Navigation links as objects
+  const navLinks = [
+    { to: "/", label: "Home", icon: <FaHome /> },
+    { to: "#about", label: "About", icon: <FaUser /> },
+    { to: "#blog", label: "Blog", icon: <FaRegNewspaper /> },
+    { to: "/contact", label: "Contact", icon: <FaEnvelope /> },
+  ];
+
   return (
     <nav
       className={`bg-gray-900 p-4 shadow fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out mt-4 ${
@@ -66,26 +75,21 @@ const Navbar = () => {
         </div>
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-white focus:outline-none">
-            {isOpen ? (
-              <span>&#10005;</span> // Close icon (X)
-            ) : (
-              <span>&#9776;</span> // Hamburger icon
-            )}
+            {isOpen ? <FaTimes /> : <FaBars />} {/* Close icon or Hamburger icon */}
           </button>
         </div>
         <div className="hidden md:flex md:items-center md:gap-8 mx-auto">
-          <Link to="/" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
-            Home
-          </Link>
-          <Link to="#about" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
-            About
-          </Link>
-          <Link to="#blog" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
-            Blog
-          </Link>
-          <Link to="#contact" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
-            Contact
-          </Link>
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.to}
+              onClick={() => setIsOpen(false)}
+              className="flex flex-col items-center text-purple-600 text-lg font-bold hover:text-white transition duration-300"
+            >
+              <div className="text-2xl">{link.icon}</div> {/* Icon on top */}
+              <span>{link.label}</span> {/* Title below */}
+            </Link>
+          ))}
           {/* Conditional Profile Image and Dropdown */}
           {user ? (
             <div className="relative">
@@ -94,7 +98,7 @@ const Navbar = () => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <img
-                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Assuming userImage is the path to the image
+                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Placeholder user image
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -109,13 +113,13 @@ const Navbar = () => {
                       setDropdownOpen(false);
                       setIsOpen(false);
                     }}
-                    className="block px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white transition duration-300"
+                    className="block px-4 py-2 text-purple-600 hover:text-white transition duration-300"
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white transition duration-300"
+                    className="block w-full text-left px-4 py-2 text-purple-600 hover:text-white transition duration-300"
                   >
                     Logout
                   </button>
@@ -125,7 +129,7 @@ const Navbar = () => {
           ) : (
             <Link
               to="/login"
-              className="text-purple-600 text-lg font-bold ring ring-purple-600 ring-sm rounded transition duration-300 ease-in-out hover:bg-purple-600 hover:text-white px-4 py-2"
+              className="text-purple-600 text-lg font-bold ring ring-purple-600 ring-sm rounded transition duration-300 ease-in-out hover:text-white px-4 py-2"
             >
               Login
             </Link>
@@ -135,32 +139,31 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`md:hidden ${isOpen ? "block" : "hidden"} bg-gray-800 rounded-[40px] mx-2`}>
         <div className="flex flex-col gap-4">
-          <Link to="/" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
-            Home
-          </Link>
-          <Link to="#about" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
-            About
-          </Link>
-          <Link to="#blog" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
-            Blog
-          </Link>
-          <Link to="/contact" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
-            Contact
-          </Link>
-
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.to}
+              onClick={() => setIsOpen(false)}
+              className="flex flex-col items-center block text-purple-600 text-lg font-bold hover:text-white transition duration-300 py-2 px-4"
+            >
+              <div className="text-2xl">{link.icon}</div> {/* Icon on top */}
+              <span>{link.label}</span> {/* Title below */}
+            </Link>
+          ))}
           {/* Conditional Logout Button for Mobile */}
           {user ? (
             <button
               onClick={handleLogout}
-              className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4"
+              className="flex flex-col items-center block text-purple-600 text-lg font-bold hover:text-white transition duration-300 py-2 px-4"
             >
-              Logout
+              <FaUser className="text-2xl mb-1" /> {/* Icon on top */}
+              Logout {/* Title below */}
             </button>
           ) : (
             <Link
               to="/login"
               onClick={() => setIsOpen(false)}
-              className="block text-purple-600 text-lg font-bold ring ring-purple-600 ring-sm rounded transition duration-300 ease-in-out hover:bg-purple-600 hover:text-white px-4 py-2 m-2"
+              className="block text-purple-600 text-lg font-bold ring ring-purple-600 ring-sm rounded transition duration-300 ease-in-out hover:text-white px-4 py-2 m-2"
             >
               Login
             </Link>
