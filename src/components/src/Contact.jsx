@@ -41,7 +41,8 @@ const Contact = () => {
       <Navbar />
       <div className="bg-gray-800 relative overflow-hidden pt-0">
         <div className="bg-gray-800 min-h-screen flex justify-center items-start lg:pt-32 w-full pt-20">
-          <div className="max-w-2xl w-2/3 bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10 mx-auto"> {/* Set width to 2/3 */}
+          <div className="max-w-2xl w-full px-10 sm:px-10 md:px-10 lg:w-2/3 bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10 mx-auto">
+            {/* Adjusted to use px-10 for sm and md, while keeping w-2/3 for lg */}
             <div className="text-center mb-6">
               <h2 className="text-3xl font-bold text-gray-100">📬 Get in Touch!</h2>
               <p className="text-gray-50 mt-3">We’d love to hear from you.</p>
