@@ -58,7 +58,7 @@ const Navbar = () => {
   // Navigation links as objects
   const navLinks = [
     { to: "/", label: "Home", icon: <FaHome /> },
-    { to: "#about", label: "About", icon: <FaUser /> },
+    { to: "/about", label: "About", icon: <FaUser /> },
     { to: "#blog", label: "Blog", icon: <FaRegNewspaper /> },
     { to: "/contact", label: "Contact", icon: <FaEnvelope /> },
   ];
