@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Navbar from "./components/Navbar/Navbar"; // Correct the path if necessary
+import Navbar from "./components/Navbar/Navbar"; // Ensure you have a Navbar component
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -13,34 +13,17 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
-  const [userImage, setUserImage] = useState("https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png");
+  const [userImage, setUserImage] = useState("");
 
   const validateInputs = () => {
     return fullname && email && password && registrationNumber && userImage;
   };
 
-  const checkIfAccountExists = async () => {
-    try {
-      const res = await axios.get(`https://pradipblogs-backend.onrender.com/api/check-email/${email}`);
-      return res.data.exists; // Assuming your backend returns an object with an 'exists' property
-    } catch (err) {
-      console.error("Error checking account existence:", err);
-      return false; // If there's an error, we assume the account does not exist
-    }
-  };
-
   const handleSignUp = async () => {
     setLoading(true);
     setButtonDisabled(true);
+    
     if (validateInputs()) {
-      const accountExists = await checkIfAccountExists();
-      if (accountExists) {
-        toast.error("An account with this email already exists.");
-        setLoading(false);
-        setButtonDisabled(false);
-        return;
-      }
-
       try {
         const res = await axios.post("https://pradipblogs-backend.onrender.com/api/signup", {
           fullname,
@@ -49,11 +32,15 @@ const Signup = () => {
           registrationNumber,
           userImage,
         });
+        
         toast.success("Account Created Successfully");
         console.log("Response:", res.data);
+
+        // Save token and user data to localStorage
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/"); // Redirect after successful signup
+        
+        navigate("/login"); // Redirect to home page after signup
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);
       } finally {
@@ -70,9 +57,9 @@ const Signup = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-black relative overflow-hidden">
-        <div className="bg-black min-h-screen flex justify-center items-start lg:pt-32 w-full pt-4">
-          <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-0">
+      <div className="bg-black relative overflow-hidden pt-0">
+        <div className="bg-black min-h-screen flex justify-center items-start lg:pt-32 w-full pt-20">
+          <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10">
             <div className="text-center mb-6">
               <h2 className="text-3xl font-bold text-gray-100">Create New Account 👋</h2>
               <p className="text-[#ffffff40] mt-3">Please enter your details to create a new account</p>
@@ -122,14 +109,13 @@ const Signup = () => {
               >
                 {loading ? "Signing Up..." : "Sign Up"}
               </button>
-              {/* Add a button to navigate to the Signup route if the account exists */}
               <div className="mt-4 text-center">
                 <p className="text-[#ffffff40]">Already have an account?</p>
                 <button
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate("/login")}
                   className="text-[#634da3] hover:underline focus:outline-none"
                 >
-                  Log In
+                  Sign In
                 </button>
               </div>
             </div>

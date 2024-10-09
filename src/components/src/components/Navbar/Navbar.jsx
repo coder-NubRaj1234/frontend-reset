@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "@fontsource/roboto/400.css"; // Regular
 import "@fontsource/roboto/700.css"; // Bold
 import "@fontsource/montserrat/400.css"; // Regular
@@ -9,7 +9,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState(null); // State to store user info
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown menu
   const navigate = useNavigate(); // To navigate programmatically
 
   const toggleMenu = () => {
@@ -27,15 +26,14 @@ const Navbar = () => {
     };
   }, []);
 
-  // Fetch user details from local storage
-  useEffect(() => {
+  // Function to fetch user details from local storage
+  const fetchUserData = () => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
-
     if (token && userData) {
-      setUser(JSON.parse(userData)); // Parse user data
+      setUser(JSON.parse(userData)); // Set user state after parsing user data
     }
-  }, []);
+  };
 
   // Logout function
   const handleLogout = () => {
@@ -43,10 +41,6 @@ const Navbar = () => {
     localStorage.removeItem("user");
     setUser(null); // Clear user state
     navigate("/login"); // Redirect to login
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
   };
 
   return (
@@ -91,40 +85,27 @@ const Navbar = () => {
             Blog
           </Link>
           <Link
+            to="/profile"
+            onClick={() => setIsOpen(false)}
+            className="text-purple-600 text-lg font-bold hover:text-white"
+          >
+            Profile
+          </Link>
+          <Link
             to="#contact"
             onClick={() => setIsOpen(false)}
             className="text-purple-600 text-lg font-bold hover:text-white"
           >
             Contact
           </Link>
-          {/* Profile Icon */}
+          {/* Conditional Logout Button */}
           {user ? (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="flex items-center">
-                <img
-                  src={user.userImage}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full border border-purple-600"
-                />
-              </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20">
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <button
+              onClick={handleLogout}
+              className="text-purple-600 text-lg font-bold hover:text-white"
+            >
+              Logout
+            </button>
           ) : (
             <Link
               to="/login"
@@ -167,33 +148,14 @@ const Navbar = () => {
             Contact
           </Link>
           
+          {/* Conditional Logout Button for Mobile */}
           {user ? (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="flex items-center">
-                <img
-                  src={user.userImage}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full border border-purple-600"
-                />
-              </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20">
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-purple-600 hover:bg-purple-600 hover:text-white"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <button
+              onClick={handleLogout}
+              className="block text-purple-600 text-lg font-bold hover:text-white py-2 px-4"
+            >
+              Logout
+            </button>
           ) : (
             <Link
               to="/login"
