@@ -28,7 +28,6 @@ const Login = () => {
         toast.success("Login Success");
         console.log("Response:", res.data);
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
         navigate("/"); // Redirect after successful login
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);

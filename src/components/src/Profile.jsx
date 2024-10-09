@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
+import { jwtDecode } from "jwt-decode"; // Use jwt-decode directly
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
+  // Function to fetch user data from the token
+  const fetchUserData = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedUser = jwtDecode(token); // Decode the token to get user data
+        setUser(decodedUser); // Set user state after decoding token
+      } catch (error) {
+        console.error("Invalid token", error);
+        navigate("/login"); // Navigate to login if the token is invalid
+      }
     } else {
-      navigate("/login");
+      navigate("/login"); // Navigate to login if no token
     }
-  }, [navigate]);
+  };
+
+  // Call fetchUserData to update user state on component mount
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const handleNavigateHome = () => {
     setLoading(true);
@@ -27,9 +40,9 @@ const Profile = () => {
   const handleLogout = () => {
     setLoading(true);
     setTimeout(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      navigate("/login");
+      localStorage.removeItem("token"); // Clear the token from localStorage
+      setUser(null); // Clear user state
+      navigate("/login"); // Redirect to login
       setLoading(false);
     }, 1000);
   };
@@ -43,13 +56,13 @@ const Profile = () => {
             <>
               <div className="text-center mb-6">
                 <img
-                  src={user.userImage}
+                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Ensure userImage is present in the token
                   alt="Profile"
-                  className="w-24 h-24 rounded-full border border-purple-600 mx-auto"
+                  className="w-24 h-24 rounded-full border border-purple-600 mx-auto object-cover" // Added object-cover for better image fitting
                 />
                 <h2 className="text-3xl font-bold text-gray-100 mt-4">{user.fullname}</h2>
                 <p className="text-[#ffffff40]">{user.email}</p>
-                <p className="text-[#ffffff40]">Registration Number: {user.registrationNumber}</p>
+                {/* Removed registration number as it's no longer needed */}
               </div>
               <div className="text-center space-y-4">
                 <button

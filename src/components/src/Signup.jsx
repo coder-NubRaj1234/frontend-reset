@@ -12,11 +12,9 @@ const Signup = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [registrationNumber, setRegistrationNumber] = useState("");
-  const [userImage, setUserImage] = useState("");
 
   const validateInputs = () => {
-    return fullname && email && password && registrationNumber && userImage;
+    return fullname && email && password;
   };
 
   const handleSignUp = async () => {
@@ -29,18 +27,13 @@ const Signup = () => {
           fullname,
           email,
           password,
-          registrationNumber,
-          userImage,
         });
         
         toast.success("Account Created Successfully");
         console.log("Response:", res.data);
 
-        // Save token and user data to localStorage
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        
-        navigate("/login"); // Redirect to home page after signup
+        // Navigate to login page after successful signup
+        navigate("/login");
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);
       } finally {
@@ -85,20 +78,6 @@ const Signup = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full p-3 bg-[#ffffff14] border-[#ffffff14] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#634da3]"
-                placeholder="Registration Number"
-                value={registrationNumber}
-                onChange={(e) => setRegistrationNumber(e.target.value)}
-              />
-              <input
-                type="url"
-                className="w-full p-3 bg-[#ffffff14] border-[#ffffff14] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#634da3]"
-                placeholder="User Image URL"
-                value={userImage}
-                onChange={(e) => setUserImage(e.target.value)}
               />
               <button
                 onClick={handleSignUp}

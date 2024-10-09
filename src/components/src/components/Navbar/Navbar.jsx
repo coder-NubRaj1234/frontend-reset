@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
 import "@fontsource/roboto/400.css"; // Regular
 import "@fontsource/roboto/700.css"; // Bold
 import "@fontsource/montserrat/400.css"; // Regular
@@ -30,10 +31,14 @@ const Navbar = () => {
   // Function to fetch user details from local storage
   const fetchUserData = () => {
     const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
-    // Check if userData exists and is not "undefined" before parsing
-    if (token && userData && userData !== "undefined") {
-      setUser(JSON.parse(userData)); // Set user state after parsing user data
+    // Decode token to get user data
+    if (token) {
+      try {
+        const decodedUser = jwtDecode(token); // Use jwtDecode to decode the token
+        setUser(decodedUser); // Set user state after decoding token
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
     }
   };
 
@@ -45,16 +50,15 @@ const Navbar = () => {
   // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setUser(null); // Clear user state
     navigate("/login"); // Redirect to login
   };
 
   return (
     <nav
-      className={`bg-gray-900 p-4 shadow fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
+      className={`bg-gray-900 p-4 shadow fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out mt-4 ${
         isScrolled ? "backdrop-blur-lg bg-gray-900/60" : ""
-      } rounded-[30px] w-2/3 mx-auto`} // Added border radius and width
+      } rounded-[30px] w-2/3 mx-auto`}
     >
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-purple-600 text-3xl font-bold">
@@ -69,50 +73,34 @@ const Navbar = () => {
             )}
           </button>
         </div>
-        <div className="hidden md:flex md:items-center md:gap-8 mx-auto"> {/* Increased gap for spacing */}
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300"
-          >
+        <div className="hidden md:flex md:items-center md:gap-8 mx-auto">
+          <Link to="/" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
             Home
           </Link>
-          <Link
-            to="#about"
-            onClick={() => setIsOpen(false)}
-            className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300"
-          >
+          <Link to="#about" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
             About
           </Link>
-          <Link
-            to="#blog"
-            onClick={() => setIsOpen(false)}
-            className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300"
-          >
+          <Link to="#blog" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
             Blog
           </Link>
-          <Link
-            to="#contact"
-            onClick={() => setIsOpen(false)}
-            className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300"
-          >
+          <Link to="#contact" onClick={() => setIsOpen(false)} className="text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300">
             Contact
           </Link>
           {/* Conditional Profile Image and Dropdown */}
           {user ? (
             <div className="relative">
               <div
-                className="w-10 h-10 rounded-full overflow-hidden cursor-pointer"
+                className="w-10 h-10 rounded-2xl mt-2 overflow-hidden cursor-pointer"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <img
-                  src={user.userImage} // Assuming userImage is the path to the image
+                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Assuming userImage is the path to the image
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
               </div>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg z-50">
+                <div className="absolute left-0 mt-4 w-58 bg-gray-800 rounded-xl shadow-lg z-50">
                   <div className="px-4 py-2 text-white font-bold">{user.fullname}</div>
                   <div className="px-4 py-2 text-gray-400">{user.email}</div>
                   <Link
@@ -146,33 +134,17 @@ const Navbar = () => {
       </div>
       {/* Mobile Menu */}
       <div className={`md:hidden ${isOpen ? "block" : "hidden"} bg-gray-800 rounded-[40px] mx-2`}>
-        <div className="flex flex-col gap-4"> {/* Increased gap for spacing */}
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4"
-          >
+        <div className="flex flex-col gap-4">
+          <Link to="/" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
             Home
           </Link>
-          <Link
-            to="#about"
-            onClick={() => setIsOpen(false)}
-            className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4"
-          >
+          <Link to="#about" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
             About
           </Link>
-          <Link
-            to="#blog"
-            onClick={() => setIsOpen(false)}
-            className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4"
-          >
+          <Link to="#blog" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
             Blog
           </Link>
-          <Link
-            to="/contact"
-            onClick={() => setIsOpen(false)}
-            className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4"
-          >
+          <Link to="/contact" onClick={() => setIsOpen(false)} className="block text-purple-600 text-lg font-bold hover:text-white hover:shadow-lg hover:shadow-purple-500 transition duration-300 py-2 px-4">
             Contact
           </Link>
 
