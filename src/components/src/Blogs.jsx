@@ -13,7 +13,7 @@ const Blogs = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/blog");
+        const response = await axios.get("https://pradipblogs-backend.onrender.com/api/blog");
         setBlogs(response.data); // Set fetched blogs to state
       } catch (error) {
         console.error("Failed to fetch blogs:", error);

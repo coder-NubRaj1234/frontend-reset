@@ -19,7 +19,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/blog");
+      const response = await fetch("https://pradipblogs-backend.onrender.com/api/blog");
       if (!response.ok) throw new Error("Failed to fetch blogs");
       const data = await response.json();
       setBlogs(data);
@@ -52,7 +52,7 @@ const Blogs = () => {
 
     try {
       if (isEditing) {
-        const response = await fetch(`http://localhost:8080/api/blog/${editBlogId}`, {
+        const response = await fetch(`https://pradipblogs-backend.onrender.com/api/blog/${editBlogId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const Blogs = () => {
         if (!response.ok) throw new Error("Failed to update blog post");
         notify("Blog post updated successfully!"); // Show success notification
       } else {
-        const response = await fetch("http://localhost:8080/api/blog", {
+        const response = await fetch("https://pradipblogs-backend.onrender.com/api/blog", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const Blogs = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/blog/${id}`, {
+      const response = await fetch(`https://pradipblogs-backend.onrender.com/api/blog/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`, // Add token to headers
