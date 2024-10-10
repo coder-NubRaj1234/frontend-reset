@@ -63,6 +63,11 @@ const Navbar = () => {
     { to: "/contact", label: "Contact", icon: <FaEnvelope /> },
   ];
 
+  // Check if user is admin to add admin link
+  if (user && user.isAdmin) {
+    navLinks.push({ to: "/admin", label: "Admin", icon: <FaUser /> }); // Add Admin link if user is admin
+  }
+
   return (
     <nav
       className={`bg-gray-900 p-4 shadow fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out mt-4 ${
@@ -98,7 +103,7 @@ const Navbar = () => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <img
-                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Placeholder user image
+                  src={user.image || 'https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg'} // Fetch user image from token or use placeholder
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
