@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar"; // Ensure you have a Navbar component
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import Dashboard from "./Dashboard";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -199,6 +200,7 @@ const UsersList = () => {
           <ToastContainer />
         </div>
       </div>
+      <Dashboard/>
     </>
   );
 };

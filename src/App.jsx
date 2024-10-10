@@ -9,7 +9,8 @@ import Home from "./pages/Home";
 import Profile from "./components/src/Profile";
 import Contact from "./components/src/Contact";
 import About from "./components/src/About";
-import ProtectedRoute from "../src/components/src/ProtectedRoute"
+import ProtectedRoute from "../src/components/src/ProtectedRoute";
+import Blogs from "./components/src/Blogs.jsx";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             </ProtectedRoute>
           } 
         />
+         <Route path="/blog" element={<ProtectedRoute><Blogs/></ProtectedRoute>} /> {/* Protect the blog route */}
         <Route path="/upload-image" element={<UploadImage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
