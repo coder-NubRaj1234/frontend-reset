@@ -1,3 +1,4 @@
+// src/components/Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +9,8 @@ import eye from "../../../public/eye.png";
 import eyeclose from "../../../public/eyeclose.png";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../../firebaseConfig";
-import { AiOutlineGoogle } from "react-icons/ai"; // Import Google icon
+import { AiOutlineGoogle } from "react-icons/ai";
+import { jwtDecode } from "jwt-decode"; // Use jwt-decode directly
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +29,18 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const token = await result.user.getIdToken();
       localStorage.setItem("token", token);
-      toast.success("✅ Google Login Successful");
+
+      const decoded = jwtDecode(token);
+      const username = decoded.name || "User";
+      const isAdmin = decoded.isAdmin;
+
+      // Show notification based on user role
+      if (isAdmin) {
+        toast.success("Hello sir, welcome back!");
+      } else {
+        toast.success(`Hello ${username}, welcome back!`);
+      }
+
       navigate("/");
     } catch (error) {
       toast.error(error.message);
@@ -47,8 +60,20 @@ const Login = () => {
           email,
           password,
         });
-        toast.success("✅ Login Successful");
-        localStorage.setItem("token", res.data.token);
+        const token = res.data.token;
+        localStorage.setItem("token", token);
+
+        const decoded = jwtDecode(token);
+        const username = decoded.username || "User";
+        const isAdmin = decoded.isAdmin;
+
+        // Show notification based on user role
+        if (isAdmin) {
+          toast.success("Hello sir, welcome back!");
+        } else {
+          toast.success(`Hello ${username}, welcome back!`);
+        }
+
         navigate("/");
       } catch (err) {
         toast.error(err.response?.data?.message || err.message);
@@ -70,11 +95,10 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-b from-gray-800 to-gray-900 min-h-screen flex justify-center items-center lg:pt-32  pt-16">
+      <div className="bg-gradient-to-b from-gray-800 to-gray-900 min-h-screen flex justify-center items-center lg:pt-32 pt-16">
         <div className="bg-[#ffffff14] backdrop-blur-md p-10 rounded-lg shadow-lg w-full max-w-md z-10 pt-10 ">
           <div className="text-center mb-6">
             <h2 className="text-4xl font-bold">
-              {/* Animated letters */}
               {["W", "e", "l", "c", "o", "m", "e", " ", "B", "a", "c", "k"].map((letter, index) => (
                 <span key={index} className={`wave-text`} style={{ display: "inline-block" }}>
                   {letter}
@@ -110,12 +134,11 @@ const Login = () => {
             <button
               onClick={handleSignIn}
               disabled={buttonDisabled}
-              className={`relative w-full py-3 text-purple-600 border border-purple-600 rounded-md transition-all duration-300 ease-in-out transform  hover:bg-purple-600 hover:text-white 
-                hover:shadow-[0px 5px 15px rgba(255, 77, 255, 0.5)] focus:outline-none`}
+              className="relative w-full py-3 text-purple-600 border border-purple-600 rounded-md transition-all duration-300 ease-in-out transform hover:bg-purple-600 hover:text-white 
+                hover:shadow-[0px 5px 15px rgba(255, 77, 255, 0.5)] focus:outline-none"
             >
               {loading ? "🔄 Signing In..." : "✨ Sign In"}
             </button>
-            {/* Google Sign-In Button */}
             <button
               onClick={handleGoogleSignIn}
               className="w-full py-3 mt-4 flex items-center justify-center text-white bg-[#db4437] rounded-md transition-all duration-300 ease-in-out hover:bg-[#c23321] 
@@ -142,31 +165,22 @@ const Login = () => {
       <style>
         {`
           @keyframes wave {
-            0%, 100% {
-              transform: translateY(0);
-            }
-            25% {
-              transform: translateY(-5px);
-            }
-            50% {
-              transform: translateY(5px);
-            }
-            75% {
-              transform: translateY(-3px);
-            }
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-5px); }
+            50% { transform: translateY(5px); }
+            75% { transform: translateY(-3px); }
           }
 
           .wave-text {
             display: inline-block;
-            animation: wave 3s forwards; /* Run animation once */
-            animation-delay: calc(0.1s * var(--i)); /* Add a delay for each letter */
-            background: linear-gradient(45deg, #634da3, #d34eb1, #c2d2e1); /* Gradient background */
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; /* Fill color transparent for gradient */
+            animation: wave 3s forwards;
+            animation-delay: calc(0.1s * var(--i));
+            background: linear-gradient(45deg, #634da3, #d34eb1, #c2d2e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
           }
 
-          /* Set individual delay for each letter */
           .wave-text:nth-child(1) { --i: 0; }
           .wave-text:nth-child(2) { --i: 1; }
           .wave-text:nth-child(3) { --i: 2; }
