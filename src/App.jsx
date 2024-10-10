@@ -9,20 +9,28 @@ import Home from "./pages/Home";
 import Profile from "./components/src/Profile";
 import Contact from "./components/src/Contact";
 import About from "./components/src/About";
+import ProtectedRoute from "../src/components/src/ProtectedRoute"
 
 const App = () => {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Home/>} />
-        <Route path="/signup" element={<Signup/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/users" element={<UsersList />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute requiredRole={true}>
+              <UsersList />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/upload-image" element={<UploadImage />} />
-        <Route path="/profile" element={<Profile/>} />
-        <Route path="/contact" element={<Contact/>} />
-        <Route path="/about" element={<About/>} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

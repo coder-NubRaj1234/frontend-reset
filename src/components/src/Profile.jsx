@@ -14,7 +14,15 @@ const Profile = () => {
     if (token) {
       try {
         const decodedUser = jwtDecode(token); // Decode the token to get user data
-        setUser(decodedUser); // Set user state after decoding token
+        // Set user state based on decoded token data
+        setUser({
+          id: decodedUser._id, // Assuming _id is part of the token payload
+          fullname: decodedUser.fullname || "Unnamed User", 
+          email: decodedUser.email || "No Email", 
+          picture: decodedUser.picture || 'https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg',
+          isAdmin: decodedUser.isAdmin || false, // Assuming this is part of the JWT payload
+          joinedDate: new Date(decodedUser.createdAt).toLocaleDateString() || "N/A", // Format createdAt
+        });
       } catch (error) {
         console.error("Invalid token", error);
         navigate("/login"); // Navigate to login if the token is invalid
@@ -56,13 +64,14 @@ const Profile = () => {
             <>
               <div className="text-center mb-6">
                 <img
-                  src='https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg' // Ensure userImage is present in the token
+                  src={user.picture} // Use user image if available
                   alt="Profile"
-                  className="w-24 h-24 rounded-full border border-purple-600 mx-auto object-cover" // Added object-cover for better image fitting
+                  className="w-32 h-32 rounded-full border border-purple-600 mx-auto object-cover mb-4" // Larger profile image
                 />
                 <h2 className="text-3xl font-bold text-gray-100 mt-4">{user.fullname}</h2>
                 <p className="text-[#ffffff40]">{user.email}</p>
-                {/* Removed registration number as it's no longer needed */}
+                <p className="text-[#ffffff40]">Joined on: {user.joinedDate}</p> {/* Display formatted joined date */}
+                <p className="text-[#ffffff40]">Role: {user.isAdmin ? "Admin" : "User"}</p> {/* Display user role */}
               </div>
               <div className="text-center space-y-4">
                 <button

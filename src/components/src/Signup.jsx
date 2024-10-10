@@ -58,12 +58,19 @@ const Signup = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-800 relative overflow-hidden pt-0">
-        <div className="bg-gray-800 min-h-screen flex justify-center items-start lg:pt-32 w-full pt-20">
+      <div className="bg-gradient-to-b from-pruple-800 to-blue-900 relative overflow-hidden pt-0">
+        <div className="bg-gray-900 min-h-screen flex justify-center items-start lg:pt-32 w-full pt-20">
           <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10">
             <div className="text-center mb-6">
-              <h2 className="text-3xl font-bold text-gray-100">✨ Create New Account 👋</h2>
-              <p className="text-[#ffffff40] mt-3">Please enter your details to create a new account</p>
+              <h2 className="text-4xl font-bold text-gray-100">
+                {/* Animated letters */}
+                {["C", "r", "e", "a", "t", "e", " ", "N", "e", "w", " ", "A", "c", "c", "o", "u", "n", "t"].map((letter, index) => (
+                  <span key={index} className={`wave-text`} style={{ display: "inline-block" }}>
+                    {letter}
+                  </span>
+                ))}
+              </h2>
+              <p className="text-[#ffffff80] mt-3">Please enter your details to create a new account</p>
             </div>
             <div className="space-y-4">
               <input
@@ -110,7 +117,7 @@ const Signup = () => {
                 {loading ? "🔄 Signing Up..." : "✨ Sign Up"}
               </button>
               <div className="mt-4 text-center">
-                <p className="text-[#ffffff40]">Already have an account?</p>
+                <p className="text-[#ffffff40]">Already have an account? 🤔</p>
                 <button
                   onClick={() => navigate("/login")}
                   className="text-[#634da3] hover:underline focus:outline-none"
@@ -123,6 +130,50 @@ const Signup = () => {
         </div>
       </div>
       <ToastContainer />
+      <style>
+        {`
+          @keyframes wave {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            25% {
+              transform: translateY(-5px);
+            }
+            50% {
+              transform: translateY(5px);
+            }
+            75% {
+              transform: translateY(-3px);
+            }
+          }
+
+          .wave-text {
+            display: inline-block;
+            animation: wave 1.5s forwards; /* Run animation once */
+            animation-delay: calc(0.1s * var(--i)); /* Add a delay for each letter */
+            background: linear-gradient(45deg, #634da3, #d34eb1, #c2d2e1); /* Gradient background */
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; /* Fill color transparent for gradient */
+            background-clip: text;
+          }
+
+          /* Set individual delay for each letter */
+          .wave-text:nth-child(1) { --i: 0; }
+          .wave-text:nth-child(2) { --i: 1; }
+          .wave-text:nth-child(3) { --i: 2; }
+          .wave-text:nth-child(4) { --i: 3; }
+          .wave-text:nth-child(5) { --i: 4; }
+          .wave-text:nth-child(6) { --i: 5; }
+          .wave-text:nth-child(7) { --i: 6; }
+          .wave-text:nth-child(8) { --i: 7; }
+          .wave-text:nth-child(9) { --i: 8; }
+          .wave-text:nth-child(10) { --i: 9; }
+          .wave-text:nth-child(11) { --i: 10; }
+          .wave-text:nth-child(12) { --i: 11; }
+          .wave-text:nth-child(13) { --i: 12; }
+          .wave-text:nth-child(14) { --i: 13; }
+        `}
+      </style>
     </>
   );
 };
