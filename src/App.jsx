@@ -11,6 +11,7 @@ import Contact from "./components/src/Contact";
 import About from "./components/src/About";
 import ProtectedRoute from "../src/components/src/ProtectedRoute";
 import Blogs from "./components/src/Blogs.jsx";
+import EmailVerification from "./components/src/EmailVerification.jsx";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/verify-email" element={<EmailVerification/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route 

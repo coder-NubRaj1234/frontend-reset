@@ -17,54 +17,61 @@ const Signup = () => {
   const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
 
   const validateInputs = () => {
-    return fullname && email && password;
+    return fullname.trim() !== "" && email.trim() !== "" && password.trim() !== "";
   };
 
   const handleSignUp = async () => {
     setLoading(true);
     setButtonDisabled(true);
-    
+  
     if (validateInputs()) {
       try {
-        const res = await axios.post("https://pradipblogs-backend.onrender.com/api/signup", {
+        const res = await axios.post("https://pradipblogs-backend.onrender.com/api/register", {
           fullname,
           email,
           password,
         });
-        
-        toast.success("✅ Account Created Successfully");
+  
+        toast.success("✅ Account Created Successfully! Please check your email for a confirmation link to verify your account.", {
+          autoClose: 5000, // 5-second toast duration
+        });
         console.log("Response:", res.data);
-
-        // Navigate to login page after successful signup
-        navigate("/login");
+  
+        // Navigate to login page after a short delay to allow the toast to be seen
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000); // Adjust the timeout duration as needed
       } catch (err) {
-        toast.error(err.response?.data?.message || err.message);
+        toast.error(err.response?.data?.message || "An error occurred during signup. Please try again.", {
+          autoClose: 5000, // 5-second toast duration
+        });
       } finally {
         setLoading(false);
         setButtonDisabled(false);
       }
     } else {
-      toast.error("⚠️ Please fill in all fields.");
+      toast.error("⚠️ Please fill in all fields.", {
+        autoClose: 5000, // 5-second toast duration
+      });
       setLoading(false);
       setButtonDisabled(false);
     }
   };
 
-  // Toggle password visibility
+  // Function to toggle password visibility
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
+    setPasswordVisible((prev) => !prev);
   };
 
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-b from-pruple-800 to-blue-900 relative overflow-hidden pt-0">
+      <div className="bg-gradient-to-b from-purple-800 to-blue-900 relative overflow-hidden pt-0">
         <div className="bg-gray-900 min-h-screen flex justify-center items-start lg:pt-32 w-full pt-20">
           <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10">
             <div className="text-center mb-6">
               <h2 className="text-4xl font-bold text-gray-100">
-                {/* Animated letters */}
-                {["C", "r", "e", "a", "t", "e", " ", "N", "e", "w", " ", "A", "c", "c", "o", "u", "n", "t"].map((letter, index) => (
+                {["C", "r", "e", "a", "a", "t", "e", " ", "N", "e", "w", " ", "A", "c", "c", "o", "u", "n", "t"].map((letter, index) => (
                   <span key={index} className={`wave-text`} style={{ display: "inline-block" }}>
                     {letter}
                   </span>
@@ -129,7 +136,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={10000} /> {/* Set global toast duration to 5 seconds */}
       <style>
         {`
           @keyframes wave {
