@@ -71,7 +71,7 @@ const Signup = () => {
           <div className="max-w-md bg-[#ffffff14] p-8 rounded-lg shadow-lg z-10 relative mt-10">
             <div className="text-center mb-6">
               <h2 className="text-4xl font-bold text-gray-100">
-                {["C", "r", "e", "a", "a", "t", "e", " ", "N", "e", "w", " ", "A", "c", "c", "o", "u", "n", "t"].map((letter, index) => (
+                {["C", "r", "e", "a", "t", "e", " ", "N", "e", "w", " ", "A", "c", "c", "o", "u", "n", "t"].map((letter, index) => (
                   <span key={index} className={`wave-text`} style={{ display: "inline-block" }}>
                     {letter}
                   </span>
