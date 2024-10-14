@@ -7,7 +7,7 @@ import Banner from "../components/src/Banner.jsx";
 const Home = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Banner/>
     </>
   );
